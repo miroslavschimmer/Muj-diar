@@ -1,0 +1,136 @@
+<!doctype html><html lang="cs"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Můj diář 2026/2027</title><meta name="theme-color" content="#6557d9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Můj diář">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<style>:root{--bg:#f4f3fb;--paper:#fff;--tasks:#fff;--notes:#fffdf7;--events:#faf8ff;--finance:#f3fbf7;--accent:#6557d9;--text:#202231;--muted:#8d91a3;--line:#ececf4;--shadow:0 10px 30px rgba(48,43,90,.08)}
+*{box-sizing:border-box}
+.sidebar{position:fixed;z-index:15;left:max(16px,calc((100vw - 1440px)/2 + 16px));top:16px;bottom:16px;width:190px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 10px;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:auto}
+.brand{font-size:17px;font-weight:850;padding:10px 12px 18px;color:#28263b}.side-section{font-size:10px;letter-spacing:.12em;color:#a1a4b3;font-weight:800;padding:14px 12px 6px}
+.sidebar button{width:100%;border:0;background:transparent;color:#555a70;text-align:left;border-radius:10px;padding:10px 12px;margin:2px 0;font:600 13px system-ui;cursor:pointer;transition:.15s}.sidebar button:hover{background:#f2f0ff;color:var(--accent);transform:translateX(2px)}.sidebar button span{margin-left:8px}.side-bottom{margin-top:auto;border-top:1px solid var(--line);padding-top:8px}
+body{margin:0;background:linear-gradient(135deg,#f7f4fb,#eef2fa);color:var(--text);font:14px system-ui,-apple-system,"Segoe UI",sans-serif}.app{width:min(calc(100% - 238px),1200px);margin:0 max(16px,calc((100vw - 1440px)/2 + 16px)) 0 auto;padding:18px 16px 88px;min-height:100vh}
+header{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.94);padding:11px 14px;border:1px solid var(--line);border-radius:18px;position:sticky;top:12px;z-index:5;box-shadow:var(--shadow)}header h1{font-size:18px;margin:0 auto 0 0}
+.btn{border:1px solid var(--line);border-radius:11px;padding:9px 12px;background:#fff;color:var(--text);cursor:pointer}.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+
+.panel{border:1px solid var(--line);border-radius:18px;padding:16px;margin:14px 0;background:var(--paper);box-shadow:var(--shadow)}.panel h2,.panel h3{margin-top:0}.tasks{background:#fff}.notes{background:#fffdf7}.events{background:linear-gradient(135deg,#fff,#faf8ff)}.finance{background:linear-gradient(135deg,#f8fffc,#fff)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.dow{text-align:center;font-weight:700;color:var(--muted);padding:9px}.day{min-height:120px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px;cursor:pointer;overflow:hidden;transition:.15s;box-shadow:0 2px 8px #302b5a08}.day:hover{border-color:#bcb5f5;transform:translateY(-2px)}.num{display:inline-grid;place-items:center;font-weight:800;width:26px;height:26px;border-radius:50%;background:#f2f1fb}.nameday{font-size:10px;color:#6d6594;margin-top:4px}.holiday{font-size:10px;color:#d66587;font-weight:700}.taskprev{font-size:10px;margin-top:7px;line-height:1.35;color:#4e5265;background:#f7f7fb;padding:5px;border-radius:7px}.done{text-decoration:line-through;opacity:.5}
+.cols{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.row{display:grid;grid-template-columns:auto 1fr 120px 130px auto;gap:7px;align-items:center;margin:8px 0;padding:7px;background:#fafafe;border:1px solid var(--line);border-radius:12px}
+input,textarea,select{width:100%;background:#fff;color:var(--text);border:1px solid #e1e2eb;border-radius:9px;padding:9px;outline:none}textarea{min-height:120px}.priority-1{border-left:5px solid #f28b9e}.priority-2{border-left:5px solid #f2bd6d}.priority-3{border-left:5px solid #6bc5a3}
+.schedule{display:grid;grid-template-columns:64px 1fr;gap:7px}.schedule label{padding-top:10px;color:#999dae;font-size:12px}.schedule input{background:#f7f5ff}.schedule input:nth-of-type(3n+1){background:#fff4e8}.schedule input:nth-of-type(3n+2){background:#f2edff}.schedule input:nth-of-type(3n){background:#ecf8ff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#faf9ff;border:1px solid var(--line);padding:18px;border-radius:15px;text-align:center}.big{font-size:27px;font-weight:800;color:var(--accent)}
+.bottom{display:none;position:fixed;bottom:8px;left:8px;right:8px;background:rgba(255,255,255,.97);border:1px solid var(--line);z-index:20;padding:7px;border-radius:18px;box-shadow:0 10px 30px #302b5a22}.bottom button{flex:1;border:0;background:none;color:#606478;font-size:11px;padding:6px}.modal{display:none;position:fixed;inset:0;background:#24213688;z-index:30;align-items:center;justify-content:center}.modal>div{background:#fff;padding:22px;border-radius:20px;max-width:560px;width:94%}
+@media(max-width:950px){.sidebar{display:none}.app{width:100%;margin:0;padding:14px 14px 88px}.bottom{display:flex}}@media(max-width:750px){.app{padding:8px 8px 88px}header{top:7px}.desktop{display:none}.bottom{display:flex}.grid{gap:3px}.dow{padding:5px;font-size:11px}.day{min-height:88px;padding:4px;border-radius:9px}.num{width:22px;height:22px;font-size:11px}.nameday,.holiday{font-size:8px}.taskprev{font-size:8px;padding:3px}.cols,.three,.stats{grid-template-columns:1fr}.row{grid-template-columns:auto 1fr 92px}.row .tag{grid-column:2}.row .del{grid-column:3}.panel{padding:12px;margin:9px 0}.schedule{grid-template-columns:54px 1fr}}</style></head><body>
+<aside class="sidebar">
+  <div class="brand">📅 <span>Můj diář</span></div>
+  <div class="side-section">PLÁNOVÁNÍ</div>
+  <button onclick="goToday()">⌂ <span>Dnes</span></button>
+  <button onclick="showTasks()">✓ <span>Úkoly</span></button>
+  <button onclick="monthView(curY,curM)">▣ <span>Kalendář</span></button>
+  <button onclick="showSchedule()">◷ <span>Program</span></button>
+  <button onclick="showGoals()">◎ <span>Cíle</span></button>
+  <div class="side-section">PŘEHLED</div>
+  <button onclick="showFinance()">💰 <span>Finance</span></button>
+  <button onclick="statsView()">📊 <span>Statistiky</span></button>
+  <button onclick="colors()">🎨 <span>Vzhled</span></button>
+  <div class="side-bottom">
+<button id="sideInstallBtn" style="display:none" onclick="installPWA()">📲 <span>Instalovat aplikaci</span></button>
+<button onclick="exportGPT()">📤 <span>ChatGPT</span></button>
+</div>
+</aside>
+<div class="app">
+<header><h1>📅 Diář 2026/2027</h1><button class="btn" onclick="goToday()">Dnes</button><button class="btn desktop" onclick="yearView()">Rok</button><button class="btn desktop" onclick="statsView()">📊 Statistiky</button><button class="btn desktop" onclick="colors()">🎨 Barvy</button><button class="btn primary desktop" onclick="exportGPT()">📤 ChatGPT</button>
+<button class="btn desktop" id="installBtn" style="display:none" onclick="installPWA()">📲 Instalovat</button></header>
+<main id="main"></main></div>
+<nav class="bottom"><button onclick="goToday()">📅<br>Dnes</button><button onclick="monthView(curY,curM)">🗓️<br>Měsíc</button><button onclick="yearView()">📆<br>Rok</button><button onclick="statsView()">📊<br>Statistiky</button><button onclick="more()">☰<br>Více</button></nav>
+<div class="modal" id="modal"><div id="modalBody"></div></div>
+<script>
+const ND={"01-01": "Nový rok", "01-02": "Karina", "01-03": "Radmila", "01-04": "Diana", "01-05": "Dalimil", "01-06": "Tři králové", "01-07": "Vilma", "01-08": "Čestmír", "01-09": "Vladan", "01-10": "Břetislav", "01-11": "Bohdana", "01-12": "Pravoslav", "01-13": "Edita", "01-14": "Radovan", "01-15": "Alice", "01-16": "Ctirad", "01-17": "Drahoslav", "01-18": "Vladislav", "01-19": "Doubravka", "01-20": "Ilona", "01-21": "Běla", "01-22": "Slavomír", "01-23": "Zdeněk", "01-24": "Milena", "01-25": "Miloš", "01-26": "Zora", "01-27": "Ingrid", "01-28": "Otýlie", "01-29": "Zdislava", "01-30": "Robin", "01-31": "Marika", "02-01": "Hynek", "02-02": "Nela", "02-03": "Blažej", "02-04": "Jarmila", "02-05": "Dobromila", "02-06": "Vanda", "02-07": "Veronika", "02-08": "Milada", "02-09": "Apolena", "02-10": "Mojmír", "02-11": "Božena", "02-12": "Slavěna", "02-13": "Věnceslav", "02-14": "Valentýn", "02-15": "Jiřina", "02-16": "Ljuba", "02-17": "Miloslava", "02-18": "Gizela", "02-19": "Patrik", "02-20": "Oldřich", "02-21": "Lenka", "02-22": "Petr", "02-23": "Svatopluk", "02-24": "Matěj", "02-25": "Liliana", "02-26": "Dorota", "02-27": "Alexandr", "02-28": "Lumír", "03-01": "Bedřich", "03-02": "Anežka", "03-03": "Kamil", "03-04": "Stela", "03-05": "Kazimír", "03-06": "Miroslav", "03-07": "Tomáš", "03-08": "Gabriela", "03-09": "Františka", "03-10": "Viktorie", "03-11": "Anděla", "03-12": "Řehoř", "03-13": "Růžena", "03-14": "Rút, Matylda", "03-15": "Ida", "03-16": "Elena, Herbert", "03-17": "Vlastimil", "03-18": "Eduard", "03-19": "Josef", "03-20": "Světlana", "03-21": "Radek", "03-22": "Leona", "03-23": "Ivona", "03-24": "Gabriel", "03-25": "Marián", "03-26": "Emanuel", "03-27": "Dita", "03-28": "Soňa", "03-29": "Taťána", "03-30": "Arnošt", "03-31": "Kvido", "04-01": "Hugo", "04-02": "Erika", "04-03": "Richard", "04-04": "Ivana", "04-05": "Miroslava", "04-06": "Vendula", "04-07": "Heřman, Hermína", "04-08": "Ema", "04-09": "Dušan", "04-10": "Darja", "04-11": "Izabela", "04-12": "Julius", "04-13": "Aleš", "04-14": "Vincenc", "04-15": "Anastázie", "04-16": "Irena", "04-17": "Rudolf", "04-18": "Valérie", "04-19": "Rostislav", "04-20": "Marcela", "04-21": "Alexandra", "04-22": "Evženie", "04-23": "Vojtěch", "04-24": "Jiří", "04-25": "Marek", "04-26": "Oto", "04-27": "Jaroslav", "04-28": "Vlastislav", "04-29": "Robert", "04-30": "Blahoslav", "05-01": "Svátek práce", "05-02": "Zikmund", "05-03": "Alexej", "05-04": "Květoslav", "05-05": "Klaudie", "05-06": "Radoslav", "05-07": "Stanislav", "05-08": "Den vítězství", "05-09": "Ctibor", "05-10": "Blažena", "05-11": "Svatava", "05-12": "Pankrác", "05-13": "Servác", "05-14": "Bonifác", "05-15": "Žofie", "05-16": "Přemysl", "05-17": "Aneta", "05-18": "Nataša", "05-19": "Ivo", "05-20": "Zbyšek", "05-21": "Monika", "05-22": "Emil", "05-23": "Vladimír", "05-24": "Jana", "05-25": "Viola", "05-26": "Filip", "05-27": "Valdemar", "05-28": "Vilém", "05-29": "Maxmilián", "05-30": "Ferdinand", "05-31": "Kamila", "06-01": "Laura", "06-02": "Jarmil", "06-03": "Tamara", "06-04": "Dalibor", "06-05": "Dobroslav", "06-06": "Norbert", "06-07": "Iveta, Slavoj", "06-08": "Medard", "06-09": "Stanislava", "06-10": "Gita", "06-11": "Bruno", "06-12": "Antonie", "06-13": "Antonín", "06-14": "Roland", "06-15": "Vít", "06-16": "Zbyněk", "06-17": "Adolf", "06-18": "Milan", "06-19": "Leoš", "06-20": "Květa", "06-21": "Alois", "06-22": "Pavla", "06-23": "Zdeňka", "06-24": "Jan", "06-25": "Ivan", "06-26": "Adriana", "06-27": "Ladislav", "06-28": "Lubomír", "06-29": "Petr a Pavel", "06-30": "Šárka", "07-01": "Jaroslava", "07-02": "Patricie", "07-03": "Radomír", "07-04": "Prokop", "07-05": "Cyril a Metoděj", "07-06": "Mistr Jan Hus", "07-07": "Bohuslava", "07-08": "Nora", "07-09": "Drahoslava", "07-10": "Libuše, Amálie", "07-11": "Olga", "07-12": "Bořek", "07-13": "Markéta", "07-14": "Karolína", "07-15": "Jindřich", "07-16": "Luboš", "07-17": "Martina", "07-18": "Drahomíra", "07-19": "Čeněk", "07-20": "Ilja", "07-21": "Vítězslav", "07-22": "Magdaléna", "07-23": "Libor", "07-24": "Kristýna", "07-25": "Jakub", "07-26": "Anna", "07-27": "Věroslav", "07-28": "Viktor", "07-29": "Marta", "07-30": "Bořivoj", "07-31": "Ignác", "08-01": "Oskar", "08-02": "Gustav", "08-03": "Miluše", "08-04": "Dominik", "08-05": "Kristián", "08-06": "Oldřiška", "08-07": "Lada", "08-08": "Soběslav", "08-09": "Roman", "08-10": "Vavřinec", "08-11": "Zuzana", "08-12": "Klára", "08-13": "Alena", "08-14": "Alan", "08-15": "Hana", "08-16": "Jáchym", "08-17": "Petra", "08-18": "Helena", "08-19": "Ludvík", "08-20": "Bernard", "08-21": "Johana", "08-22": "Bohuslav", "08-23": "Sandra", "08-24": "Bartoloměj", "08-25": "Radim", "08-26": "Luděk", "08-27": "Otakar", "08-28": "Augustýn", "08-29": "Evelína", "08-30": "Vladěna", "08-31": "Pavlína", "09-01": "Linda, Samuel", "09-02": "Adéla", "09-03": "Bronislav", "09-04": "Jindřiška", "09-05": "Boris", "09-06": "Boleslav", "09-07": "Regína", "09-08": "Mariana", "09-09": "Daniela", "09-10": "Irma", "09-11": "Denisa", "09-12": "Marie", "09-13": "Lubor", "09-14": "Radka", "09-15": "Jolana", "09-16": "Ludmila", "09-17": "Naděžda", "09-18": "Kryštof", "09-19": "Zita", "09-20": "Oleg", "09-21": "Matouš", "09-22": "Darina", "09-23": "Berta", "09-24": "Jaromír", "09-25": "Zlata", "09-26": "Andrea", "09-27": "Jonáš", "09-28": "Václav", "09-29": "Michal", "09-30": "Jeroným", "10-01": "Igor", "10-02": "Oliver, Olívie", "10-03": "Bohumil", "10-04": "František", "10-05": "Eliška", "10-06": "Hanuš", "10-07": "Justýna", "10-08": "Věra", "10-09": "Sára, Štefan", "10-10": "Marina", "10-11": "Andrej", "10-12": "Marcel", "10-13": "Renáta", "10-14": "Agáta", "10-15": "Tereza", "10-16": "Havel", "10-17": "Hedvika", "10-18": "Lukáš", "10-19": "Michaela", "10-20": "Vendelín", "10-21": "Brigita", "10-22": "Sabina", "10-23": "Teodor", "10-24": "Nina", "10-25": "Beáta", "10-26": "Erik", "10-27": "Šarlota, Zoe", "10-28": "Alfréd", "10-29": "Silvie", "10-30": "Tadeáš", "10-31": "Štěpánka", "11-01": "Felix", "11-02": "Tobiáš", "11-03": "Hubert", "11-04": "Karel", "11-05": "Miriam", "11-06": "Liběna", "11-07": "Saskie", "11-08": "Bohumír", "11-09": "Bohdan", "11-10": "Evžen", "11-11": "Martin", "11-12": "Benedikt", "11-13": "Tibor", "11-14": "Sáva", "11-15": "Leopold", "11-16": "Otmar", "11-17": "Mahulena", "11-18": "Romana", "11-19": "Alžběta", "11-20": "Nikola", "11-21": "Albert", "11-22": "Cecílie", "11-23": "Klement", "11-24": "Emílie", "11-25": "Kateřina", "11-26": "Artur", "11-27": "Xenie", "11-28": "René", "11-29": "Zina", "11-30": "Ondřej", "12-01": "Iva", "12-02": "Blanka", "12-03": "Svatoslav", "12-04": "Barbora", "12-05": "Jitka", "12-06": "Mikuláš", "12-07": "Ambrož, Benjamín", "12-08": "Květoslava", "12-09": "Vratislav", "12-10": "Julie", "12-11": "Dana", "12-12": "Simona", "12-13": "Lucie", "12-14": "Lýdie", "12-15": "Radana", "12-16": "Albína", "12-17": "Daniel", "12-18": "Miloslav", "12-19": "Ester", "12-20": "Dagmar", "12-21": "Natálie", "12-22": "Šimon", "12-23": "Vlasta", "12-24": "Adam a Eva", "12-25": "1. svátek vánoční", "12-26": "2. svátek vánoční", "12-27": "Žaneta", "12-28": "Bohumila", "12-29": "Judita", "12-30": "David", "12-31": "Silvestr"}, HOL={"2026-01-01": "Nový rok / Den obnovy samostatného českého státu", "2026-04-03": "Velký pátek", "2026-04-06": "Velikonoční pondělí", "2026-05-01": "Svátek práce", "2026-05-08": "Den vítězství", "2026-07-05": "Cyril a Metoděj", "2026-07-06": "Mistr Jan Hus", "2026-09-28": "Den české státnosti", "2026-10-28": "Den vzniku samostatného Československa", "2026-11-17": "Den boje za svobodu a demokracii", "2026-12-24": "Štědrý den", "2026-12-25": "1. svátek vánoční", "2026-12-26": "2. svátek vánoční", "2027-01-01": "Nový rok / Den obnovy samostatného českého státu", "2027-03-26": "Velký pátek", "2027-03-29": "Velikonoční pondělí", "2027-05-01": "Svátek práce", "2027-05-08": "Den vítězství", "2027-07-05": "Cyril a Metoděj", "2027-07-06": "Mistr Jan Hus", "2027-09-28": "Den české státnosti", "2027-10-28": "Den vzniku samostatného Československa", "2027-11-17": "Den boje za svobodu a demokracii", "2027-12-24": "Štědrý den", "2027-12-25": "1. svátek vánoční", "2027-12-26": "2. svátek vánoční"};
+const MN=["leden","únor","březen","duben","květen","červen","červenec","srpen","září","říjen","listopad","prosinec"];
+let db=JSON.parse(localStorage.getItem("diar2627")||'{"days":{},"months":{},"colors":{}}');
+let now=new Date(),curY=[2026,2027].includes(now.getFullYear())?now.getFullYear():2026,curM=now.getMonth();
+const $=x=>document.getElementById(x), esc=s=>(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function persist(){localStorage.setItem("diar2627",JSON.stringify(db))}
+function key(y,m,d){return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`}
+function dayData(k){return db.days[k]||(db.days[k]={tasks:[],schedule:{},note:"",income:"",expense:"",financeNote:""})}
+function monthData(y,m){let k=`${y}-${m}`;return db.months[k]||(db.months[k]={goals:["","",""]})}
+function getND(k){return ND[k.slice(5)]||""}
+function monthView(y,m){curY=y;curM=m;let first=new Date(y,m,1),days=new Date(y,m+1,0).getDate(),offset=(first.getDay()+6)%7;
+ let md=monthData(y,m),h=`<div class="panel"><div style="display:flex;align-items:center;gap:8px"><button class=btn onclick="prevM()">◀</button><h2 style="flex:1;text-align:center">${MN[m]} ${y}</h2><button class=btn onclick="nextM()">▶</button></div>
+ <div class=three>${md.goals.map((g,i)=>`<input placeholder="🎯 Hlavní cíl ${i+1}" value="${esc(g)}" onchange="saveGoal(${y},${m},${i},this.value)">`).join("")}</div></div>
+ <div class=grid>${["Po","Út","St","Čt","Pá","So","Ne"].map(x=>`<div class=dow>${x}</div>`).join("")}${'<div></div>'.repeat(offset)}`;
+ for(let d=1;d<=days;d++){let k=key(y,m,d),x=dayData(k),tasks=x.tasks.filter(t=>t.text),names=tasks.slice(0,3).map(t=>`${t.done?"✓":"•"} ${esc(t.text)}`).join("<br>");
+ h+=`<div class=day onclick="openDay('${k}')"><span class=num>${d}</span><div class=nameday>👤 ${esc(getND(k))}</div>${HOL[k]?`<div class=holiday>🇨🇿 ${esc(HOL[k])}</div>`:""}${names?`<div class=taskprev>${names}</div>`:""}</div>`}
+ $("main").innerHTML=h+"</div>"+monthFinance(y,m)}
+function monthFinance(y,m){let pre=`${y}-${String(m+1).padStart(2,"0")}`,inc=0,exp=0;Object.entries(db.days).forEach(([k,x])=>{if(k.startsWith(pre)){inc+=+x.income||0;exp+=+x.expense||0}});
+ return `<div class="panel finance"><h3>💰 Finance měsíce</h3><div class=three><div>Příjmy<br><b>${inc.toLocaleString("cs-CZ")} Kč</b></div><div>Výdaje<br><b>${exp.toLocaleString("cs-CZ")} Kč</b></div><div>Úspora<br><b>${(inc-exp).toLocaleString("cs-CZ")} Kč</b></div></div></div>`}
+function saveGoal(y,m,i,v){monthData(y,m).goals[i]=v;persist()}
+function prevM(){curM--;if(curM<0){curM=11;curY--}if(curY<2026){curY=2026;curM=0}monthView(curY,curM)}
+function nextM(){curM++;if(curM>11){curM=0;curY++}if(curY>2027){curY=2027;curM=11}monthView(curY,curM)}
+function openDay(k){let x=dayData(k),[y,mm,d]=k.split("-").map(Number);curY=y;curM=mm-1;
+ let hours="";for(let hr=6;hr<=23;hr++)hours+=`<label>${String(hr).padStart(2,"0")}:00</label><input value="${esc(x.schedule[hr]||"")}" onchange="setSchedule('${k}',${hr},this.value)">`;
+ $("main").innerHTML=`<button class=btn onclick="monthView(${y},${mm-1})">← Zpět na měsíc</button><div class="panel events"><h2>${d}. ${MN[mm-1]} ${y}</h2><b>👤 ${esc(getND(k))}</b>${HOL[k]?`<p>🇨🇿 ${esc(HOL[k])}</p>`:""}</div>
+ <div class="panel tasks"><h3>📋 Úkoly</h3><div id=tasklist>${taskHTML(k,x)}</div><button class=btn onclick="addTask('${k}')">+ Přidat úkol</button></div>
+ <div class=cols><div class=panel><h3>🕐 Program dne</h3><div class=schedule>${hours}</div></div><div><div class="panel notes"><h3>📝 Denní poznámky</h3><textarea onchange="setField('${k}','note',this.value)">${esc(x.note)}</textarea></div>
+ <div class="panel finance"><h3>💰 Finance dne</h3><label>Příjmy<input type=number value="${x.income||""}" onchange="setField('${k}','income',this.value)"></label><label>Výdaje<input type=number value="${x.expense||""}" onchange="setField('${k}','expense',this.value)"></label><p>Úspora: <b>${((+x.income||0)-(+x.expense||0)).toLocaleString("cs-CZ")} Kč</b></p><textarea placeholder="Poznámka k financím" onchange="setField('${k}','financeNote',this.value)">${esc(x.financeNote)}</textarea></div></div></div>`}
+function taskHTML(k,x){return x.tasks.map((t,i)=>`<div class="row priority-${t.priority||2}"><input type=checkbox ${t.done?"checked":""} onchange="taskSet('${k}',${i},'done',this.checked)"><input value="${esc(t.text)}" placeholder="Název úkolu" onchange="taskSet('${k}',${i},'text',this.value)"><select onchange="taskSet('${k}',${i},'priority',+this.value)"><option value=1 ${t.priority==1?"selected":""}>⭐ Vysoká</option><option value=2 ${!t.priority||t.priority==2?"selected":""}>⭐ Střední</option><option value=3 ${t.priority==3?"selected":""}>⭐ Nízká</option></select><select class=tag onchange="taskSet('${k}',${i},'tag',this.value)"><option value="">bez značky</option>${["důležité","zavolat","zařídit","koupit"].map(a=>`<option ${t.tag==a?"selected":""}>${a}</option>`).join("")}</select><button class="btn del" onclick="delTask('${k}',${i})">×</button></div>`).join("")}
+function addTask(k){dayData(k).tasks.push({text:"",done:false,priority:2,tag:""});persist();openDay(k)}
+function taskSet(k,i,f,v){dayData(k).tasks[i][f]=v;persist()}
+function delTask(k,i){dayData(k).tasks.splice(i,1);persist();openDay(k)}
+function setSchedule(k,h,v){dayData(k).schedule[h]=v;persist()}
+function setField(k,f,v){dayData(k)[f]=v;persist();if(f=="income"||f=="expense")openDay(k)}
+function yearView(){let h=`<div class=panel><h2>📆 Rok</h2><div class=three>`;for(let y of [2026,2027])for(let m=0;m<12;m++)h+=`<button class=btn onclick="monthView(${y},${m})">${MN[m]} ${y}</button>`;$("main").innerHTML=h+"</div></div>"}
+function statsView(){let total=done=inc=exp=0,tags={};Object.values(db.days).forEach(x=>{(x.tasks||[]).forEach(t=>{if(t.text){total++;if(t.done)done++;if(t.tag)tags[t.tag]=(tags[t.tag]||0)+1}});inc+=+x.income||0;exp+=+x.expense||0});
+ $("main").innerHTML=`<div class=panel><h2>📊 Statistiky 2026/2027</h2><div class=stats><div class=stat><div class=big>${total}</div>úkolů</div><div class=stat><div class=big>${done}</div>splněno</div><div class=stat><div class=big>${total?Math.round(done/total*100):0}%</div>úspěšnost</div><div class=stat><div class=big>${(inc-exp).toLocaleString("cs-CZ")}</div>úspora Kč</div></div><p>Příjmy: <b>${inc.toLocaleString("cs-CZ")} Kč</b> · Výdaje: <b>${exp.toLocaleString("cs-CZ")} Kč</b></p><p>${Object.entries(tags).map(([a,n])=>`${a}: <b>${n}</b>`).join(" · ")}</p></div>`}
+function colors(){$("modal").style.display="flex";$("modalBody").innerHTML=`<h3>🎨 Vlastní barvy</h3>${["bg","paper","tasks","notes","events","finance","accent"].map(a=>`<label>${a}<input type=color id="c_${a}" value="${db.colors[a]||getComputedStyle(document.documentElement).getPropertyValue("--"+a).trim()}"></label>`).join("")}<p><button class="btn primary" onclick="saveColors()">Uložit barvy</button> <button class=btn onclick="closeModal()">Zavřít</button></p>`}
+function saveColors(){["bg","paper","tasks","notes","events","finance","accent"].forEach(a=>db.colors[a]=$("c_"+a).value);persist();applyColors();closeModal()}
+function applyColors(){Object.entries(db.colors||{}).forEach(([a,v])=>document.documentElement.style.setProperty("--"+a,v))}
+function closeModal(){$("modal").style.display="none"}
+function more(){$("modal").style.display="flex";$("modalBody").innerHTML=`<h3>Více</h3><button class=btn onclick="colors()">🎨 Barvy</button>
+<button class="btn" id="mobileInstallBtn" onclick="installPWA()">📲 Instalovat aplikaci</button>
+<button class="btn primary" onclick="exportGPT()">📤 Export do ChatGPT</button><p><button class=btn onclick="closeModal()">Zavřít</button></p>`}
+function exportGPT(){let txt=`DIÁŘ 2026/2027\n\n`+Object.keys(db.days).sort().map(k=>{let x=db.days[k],ts=(x.tasks||[]).filter(t=>t.text).map(t=>`- [${t.done?"x":" "}] ${t.text} | priorita ${t.priority||2}${t.tag?" | "+t.tag:""}`).join("\n");return `${k} – ${getND(k)}${HOL[k]?" – "+HOL[k]:""}\n${ts}\nPoznámka: ${x.note||""}\nPříjem: ${x.income||0}, výdaj: ${x.expense||0}, finance: ${x.financeNote||""}`}).join("\n\n");
+ navigator.clipboard?.writeText(txt);window.open("https://chatgpt.com/","_blank");alert("Diář byl připraven a zkopírován do schránky. Vložte jej do ChatGPT pomocí Ctrl+V.") }
+
+function showTasks(){
+ let rows=[];
+ Object.keys(db.days).sort().forEach(k=>(db.days[k].tasks||[]).forEach((t,i)=>{if(t.text)rows.push(`<div class="row priority-${t.priority||2}"><input type=checkbox ${t.done?"checked":""} onchange="taskSet('${k}',${i},'done',this.checked);showTasks()"><div><b>${esc(t.text)}</b><br><small>${k}${t.tag?" · "+esc(t.tag):""}</small></div><span>⭐ ${t.priority||2}</span><button class=btn onclick="openDay('${k}')">Otevřít</button></div>`)}));
+ $("main").innerHTML=`<div class="panel tasks"><h2>✓ Všechny úkoly</h2>${rows.length?rows.join(""):"<p>Zatím nejsou žádné úkoly.</p>"}</div>`;
+}
+function showSchedule(){
+ let rows=[];Object.keys(db.days).sort().forEach(k=>{let sch=db.days[k].schedule||{};Object.keys(sch).sort((a,b)=>a-b).forEach(h=>{if(sch[h])rows.push(`<div class=panel style="margin:7px 0"><b>${k} · ${String(h).padStart(2,"0")}:00</b><br>${esc(sch[h])}</div>`)})});
+ $("main").innerHTML=`<div class=panel><h2>◷ Program</h2>${rows.length?rows.join(""):"<p>V programu zatím nic není.</p>"}</div>`;
+}
+function showGoals(){
+ let rows=[];for(let y of [2026,2027])for(let m=0;m<12;m++){let md=monthData(y,m),g=md.goals.filter(Boolean);if(g.length)rows.push(`<div class=panel><h3>${MN[m]} ${y}</h3>${g.map((x,i)=>`<p>🎯 ${esc(x)}</p>`).join("")}<button class=btn onclick="monthView(${y},${m})">Otevřít měsíc</button></div>`)}
+ $("main").innerHTML=`<div class=panel><h2>◎ Hlavní cíle</h2>${rows.length?rows.join(""):"<p>Zatím nejsou zadané žádné měsíční cíle.</p>"}</div>`;
+}
+function showFinance(){
+ let h=`<div class="panel finance"><h2>💰 Finance 2026/2027</h2>`;for(let y of [2026,2027]){h+=`<h3>${y}</h3><div class=three>`;for(let m=0;m<12;m++){let pre=`${y}-${String(m+1).padStart(2,"0")}`,inc=0,exp=0;Object.entries(db.days).forEach(([k,x])=>{if(k.startsWith(pre)){inc+=+x.income||0;exp+=+x.expense||0}});h+=`<button class=btn onclick="monthView(${y},${m})"><b>${MN[m]}</b><br><small>+${inc.toLocaleString("cs-CZ")} / −${exp.toLocaleString("cs-CZ")} Kč<br>Úspora ${(inc-exp).toLocaleString("cs-CZ")} Kč</small></button>`}h+=`</div>`}$("main").innerHTML=h+"</div>";
+}
+
+function goToday(){let d=new Date();if(![2026,2027].includes(d.getFullYear())){monthView(2026,0)}else openDay(key(d.getFullYear(),d.getMonth(),d.getDate()))}
+applyColors();monthView(curY,curM);
+
+let deferredInstallPrompt=null;
+window.addEventListener("beforeinstallprompt",e=>{
+ e.preventDefault();deferredInstallPrompt=e;
+ ["installBtn","sideInstallBtn"].forEach(id=>{let el=document.getElementById(id);if(el)el.style.display=""});
+});
+async function installPWA(){
+ if(deferredInstallPrompt){
+   deferredInstallPrompt.prompt();
+   await deferredInstallPrompt.userChoice;
+   deferredInstallPrompt=null;
+   ["installBtn","sideInstallBtn"].forEach(id=>{let el=document.getElementById(id);if(el)el.style.display="none"});
+ }else{
+   alert("Pokud se instalační nabídka nezobrazí, otevřete nabídku prohlížeče a zvolte „Přidat na plochu“ nebo „Instalovat aplikaci“. Na iPhonu použijte Sdílet → Přidat na plochu.");
+ }
+}
+window.addEventListener("appinstalled",()=>{deferredInstallPrompt=null});
+if("serviceWorker" in navigator){
+ window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js").catch(console.error));
+}
+</script></body></html>

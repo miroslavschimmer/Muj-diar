@@ -1,0 +1,16 @@
+MŮJ DIÁŘ 2026/2027 – PWA
+
+Důležité:
+PWA instalace a offline service worker fungují při otevření přes HTTPS (ne pouhým dvojklikem na index.html přes file://).
+
+Soubory:
+- index.html
+- manifest.webmanifest
+- service-worker.js
+- icons/
+
+Po nahrání celé složky na HTTPS web otevřete index.html v Chrome/Edge/Safari.
+Android: nabídka prohlížeče → Instalovat aplikaci / Přidat na plochu.
+iPhone/iPad: Safari → Sdílet → Přidat na plochu.
+
+Data diáře se nadále ukládají lokálně v prohlížeči zařízení.
